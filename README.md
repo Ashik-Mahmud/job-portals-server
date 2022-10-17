@@ -16,9 +16,10 @@ This is a job portal server that allows users to post jobs and apply for jobs. I
         ```json
         {
             "name": "John Doe",
-            "email": "
-
-    [...]
+            "email": "jone@doe.com",
+            "password": "password"
+        }
+        ```
 
 ## License
 
