@@ -4,10 +4,11 @@ const app = require("./app");
 
 /* Imports Router Here */
 const jobsRouter = require("./../routes/jobs.route")
-
+const userRouter = require("./../routes/user.route")
 
 
 /* Apply Router Here */
+app.use("api/user", userRouter)
 app.use("/api/jobs", jobsRouter);
 
 
