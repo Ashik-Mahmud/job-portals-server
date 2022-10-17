@@ -11,6 +11,28 @@
         place-items: center;
         height: 95vh;
       }
+      body {
+        background-color: #d70;
+      }
+
+      @media (prefers-color-scheme: light) {
+        body {
+          background-color: #0f0;
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: rgb(43, 39, 39);
+        }
+        .container {
+          color: #fff;
+          text-align: center;
+        }
+        .container h1 {
+          font-size: 3rem;
+        }
+      }
     </style>
   </head>
   <body>

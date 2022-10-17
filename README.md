@@ -13,13 +13,13 @@ This is a job portal server that allows users to post jobs and apply for jobs. I
 
 1.  To create a new user, send a POST request to `/users` with the following body:
 
-        ```json
-        {
-            "name": "John Doe",
-            "email": "jone@doe.com",
-            "password": "password"
-        }
-        ```
+```json
+{
+  "name": "John Doe",
+  "email": "jone@doe.com",
+  "password": "password"
+}
+```
 
 ## License
 
