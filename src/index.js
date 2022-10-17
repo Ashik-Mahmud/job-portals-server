@@ -17,13 +17,6 @@ app.use("/api/jobs", jobsRouter);
 
 
 
-/* Listen App */
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
-});
-
-
-
 
 /* Global Error Handling */
 

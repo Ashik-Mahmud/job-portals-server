@@ -6,7 +6,10 @@ const jobsController = require('./../controllers/jobs.controller');
 // Import Middleware
 
 
-// Init Routes
+/**
+ * Init Routes 
+ * 
+ */ 
 
 // @route POST api/jobs
 // @desc Create a Job by Hiring Manager
