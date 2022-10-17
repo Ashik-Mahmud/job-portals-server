@@ -1,11 +1,10 @@
 const app = require("./app");
-const port = process.env.PORT || 5000;
+require("dotenv").config();
 
 
 
 /* Imports Router Here */
 const jobsRouter = require("./../routes/jobs.route")
-
 
 
 
