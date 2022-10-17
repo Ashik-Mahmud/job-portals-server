@@ -1,6 +1,22 @@
 const app = require("./app");
 const port = process.env.PORT || 5000;
 
+
+
+/* Imports Router Here */
+const jobsRouter = require("./../routes/jobs.route")
+
+
+
+
+/* Apply Router Here */
+app.use("/api/jobs", jobsRouter);
+
+
+
+
+
+
 /* Listen App */
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
@@ -28,7 +44,6 @@ app.use((err, req, res, next) => {
         error: err
     });
 });
-
 
 process.on("unhandledRejection", (err, promise) => {
   console.log(`Error: ${err.message}`);
