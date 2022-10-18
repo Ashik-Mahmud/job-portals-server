@@ -1,7 +1,6 @@
 const User = require("../models/User.model");
-const bcrypt = require("bcrypt");
 const { findUserByEmail } = require("../services/user.service");
-
+const bcrypt = require('bcrypt');
 // Register User Controller
 const register = async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -19,8 +18,6 @@ const register = async (req, res) => {
       password,
       role,
     });
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
     await user.save();
     const token = await user.generateAuthToken();
     res.status(201).json({
@@ -38,13 +35,19 @@ const register = async (req, res) => {
 
 // Login User Controller
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body;  
   try {
-    const user = await User.findByCredentials(email, password);
+    const user = await User.findByCredentials(email, password);   
     if (!user) {
-      return res.status(401).json({
-        message: "Login failed! Check authentication credentials",
-      });
+        return res.status(400).json({
+            message: "Invalid Credentials",
+        });
+    }  
+    
+    if(user.tokens.length === 3){
+        return res.status(400).json({
+            message: "You have reached the maximum number of login users to logged You should logout first.",
+        });
     }
     const token = await user.generateAuthToken();
     res.status(200).json({
@@ -54,7 +57,7 @@ const login = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: "Server Error",
+      message: "Credential is probably wrong "+ err,
     });
   }
 };
