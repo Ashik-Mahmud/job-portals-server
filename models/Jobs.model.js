@@ -1,89 +1,96 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
+const mongoose = require("mongoose");
+const validator = require("validator");
 
-
-const jobsSchema = new mongoose.Schema({
+const jobsSchema = new mongoose.Schema(
+  {
     title: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     position: {
-        type: String,
-        required: true,
-        trim: true,
+      type: String,
+      required: true,
+      trim: true,
     },
     description: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     location: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     jobType: {
-        type: String,
-        trim: true,
-        enum: ["remote", "on-site", "hybrid"],
-        required: true,
+      type: String,
+      trim: true,
+      enum: ["remote", "on-site", "hybrid"],
+      required: true,
     },
     workType: {
-        type: String,
-        trim: true,
-        enum: ['Full Time', 'Part Time', 'Internship', 'Contract','Volunteer'],
-        required: true,
+      type: String,
+      trim: true,
+      enum: ["Full Time", "Part Time", "Internship", "Contract", "Volunteer"],
+      required: true,
     },
     salary: {
-        type: Number,
-        required: true,
-        trim: true
+      type: Number,
+      required: true,
+      trim: true,
     },
-    employees:{
-        type: Number,
-        trim: true,
-        default: 1,
-        min: [1, 'min value will be 1']
+    employees: {
+      type: Number,
+      trim: true,
+      default: 1,
+      min: [1, "min value will be 1"],
     },
     company: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     vacancy: {
-        type: Number,
-        default: 1,
-        trim: true,
-        min: [1, 'Minimum 1 vacancy required'],
-        required: true,
+      type: Number,
+      default: 1,
+      trim: true,
+      min: [1, "Minimum 1 vacancy required"],
+      required: true,
     },
     deadLine: {
-        type: Number,
-        required: true,
-        trim: true,
+      type: Number,
+      required: true,
+      trim: true,
     },
     hiringManager: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User'
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
     },
-    appliedCandidates: [{
+    appliedCandidates: [
+      {
         candidate: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-            ref: 'User'
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
         },
-    }],
+        candidateInfo: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "AppliedJob",
+        },
+      },
+    ],
     status: {
-        type: String,
-        trim: true,
-        enum: ['active', 'inactive'],
-        default: 'active'
+      type: String,
+      trim: true,
+      enum: ["active", "inactive"],
+      default: "active",
     },
-}, {
-    timestamps: true
-});
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const Job = mongoose.model('Jobs', jobsSchema);
+const Job = mongoose.model("Jobs", jobsSchema);
 module.exports = Job;

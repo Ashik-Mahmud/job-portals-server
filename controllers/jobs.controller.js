@@ -3,9 +3,10 @@ const {
   postJobByHrService,
   findAllJobService,
   findJobById,
+  applyJobService,
+  saveAppliedCandidateInfoService,
 } = require("../services/job.service");
 const { findUserByIdService } = require("../services/user.service");
-
 
 /* Post Job from Hiring Manager */
 const postJob = async (req, res) => {
@@ -41,11 +42,10 @@ const postJob = async (req, res) => {
       message: "All fields are required.",
     });
   }
- 
-  const todayDate = Date.now() 
-  const days = deadLine *24*60*60*1000;
+
+  const todayDate = Date.now();
+  const days = deadLine * 24 * 60 * 60 * 1000;
   const increaseDate = todayDate + days;
-  
 
   try {
     const job = await postJobByHrService({
@@ -149,7 +149,7 @@ const getAllJobs = async (req, res) => {
     req.query;
 
   try {
-    let filters = {status: "active"};
+    let filters = { status: "active" };
     let sort = {};
     /* Filtered by location */
     if (location) {
@@ -207,7 +207,10 @@ const getAllJobs = async (req, res) => {
 const getJobByJobId = async (req, res) => {
   const _id = req.params.id;
   try {
-    const job = await Job.findOne({ _id }).populate("hiringManager", "name email role socialLinks");
+    const job = await Job.findOne({ _id }).populate(
+      "hiringManager",
+      "name email role socialLinks"
+    );
     if (!job) {
       return res.status(404).send({
         success: false,
@@ -227,56 +230,73 @@ const getJobByJobId = async (req, res) => {
   }
 };
 
-
 /* Apply Job for */
-const applyJob = async(req, res) =>{
-    const _id = req.params.id;
+const applyJob = async (req, res) => {
+  const _id = req.params.id;
 
-    if(!_id) return res.status(404).send({
-        success: false,
-        message: 'ID not found.'
-    })
+  const { coverLetter, resume, portfolio, linkedIn, github } = req.body;
 
+  if (!coverLetter || !resume || !portfolio || !linkedIn || !github) {
+    return res.status(403).send({
+      success: false,
+      message: "All fields are required.",
+    });
+  }
+
+  try {
     const candidate = req.user._id;
     const job = await findJobById(_id);
-    const user = await findUserByIdService(candidate)
+    const user = await findUserByIdService(candidate);
 
-    if(!user) return res.status(404).send({
+    if (!job)
+      return res.status(404).send({
         success: false,
-        message: 'User not found'
-    })
-    if(!job) return res.status(404).send({
+        message: "Job not found.",
+      });
+
+    if (!user)
+      return res.status(404).send({
         success: false,
-        message: 'Job not found.'
-    })
-    
-  
+        message: "User not found",
+      });
 
+    const isApplied = await Job.findOne({
+      $and: [{ _id }, { "appliedCandidates.candidate": candidate }],
+    });
+    if (isApplied)
+      return res.status(400).send({
+        success: false,
+        message: "You have already applied for this job.",
+      });
 
-    if(job.appliedCandidates.includes(candidate)){
-        return res.status(404).send({
-            success: false,
-            message: "Already applied"
-        })
-    }
+    const savedAppliedCandidateInfo = await saveAppliedCandidateInfoService(
+      req.body,
+      candidate,
+      _id
+    );
+    const applyJob = await applyJobService({
+      candidate,
+      jobId: _id,
+      infoId: savedAppliedCandidateInfo._id,
+    });
 
- 
-
-
-    job.appliedCandidates.push(candidate);
-    job.save();
-
+    if (!applyJob)
+      return res.status(400).send({
+        success: false,
+        message: "Something went wrong.",
+      });
 
     res.status(202).send({
-        success: true, 
-        message: 'Applied Job'
-    })
-    
-}
-
-
-
-
+      success: true,
+      message: "Applied Job successfully done.",
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Server error." + error,
+    });
+  }
+};
 
 module.exports = {
   postJob,
@@ -285,5 +305,5 @@ module.exports = {
   updateJobById,
   getAllJobs,
   getJobByJobId,
-  applyJob
+  applyJob,
 };

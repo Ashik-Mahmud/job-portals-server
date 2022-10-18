@@ -1,6 +1,7 @@
 /* AppliedJob Schema */
 const mongoose = require('mongoose');
 const validator = require("validator")
+const Schema = mongoose.Schema;
 const AppliedJobSchema = new Schema({
     job: {
         type: Schema.Types.ObjectId,
@@ -10,7 +11,7 @@ const AppliedJobSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    resumeLink: {
+    resume: {
         type: String,
         required: true,
         validate: {
@@ -19,7 +20,7 @@ const AppliedJobSchema = new Schema({
             }
         }
     },
-    portfolioLink: {
+    portfolio: {
         type: String,
         validate: {
             validator: function(v) {
@@ -27,7 +28,7 @@ const AppliedJobSchema = new Schema({
             }
         }
     },
-    linkedInLink: {
+    linkedIn: {
         type: String,
         validate: {
             validator: function(v) {
@@ -35,7 +36,7 @@ const AppliedJobSchema = new Schema({
             }
         }
     },
-    githubLink: {
+    github: {
         type: String,
         validate: {
             validator: function(v) {
