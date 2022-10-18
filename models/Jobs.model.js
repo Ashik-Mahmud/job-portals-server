@@ -67,7 +67,20 @@ const jobsSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
-    }
+    },
+    appliedCandidates: [{
+        candidate: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User'
+        },
+    }],
+    status: {
+        type: String,
+        trim: true,
+        enum: ['active', 'inactive'],
+        default: 'active'
+    },
 }, {
     timestamps: true
 });

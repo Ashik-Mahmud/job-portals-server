@@ -9,7 +9,7 @@ const userRouter = require("./../routes/user.route")
 
 /* Apply Router Here */
 app.use("/api/user", userRouter)
-app.use("/api/jobs", jobsRouter);
+app.use("/api", jobsRouter);
 
 
 

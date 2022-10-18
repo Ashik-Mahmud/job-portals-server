@@ -37,12 +37,15 @@ const postJob = async (req, res) => {
   }
 
   try {
-    const job = await postJobByHrService({...req.body, hiringManager: req.user._id});
+    const job = await postJobByHrService({
+      ...req.body,
+      hiringManager: req.user._id,
+    });
     res.status(201).send({
-        success: true,
-        message: "Job posted successfully.",
-        data: job,
-        });
+      success: true,
+      message: "Job posted successfully.",
+      data: job,
+    });
   } catch (error) {
     res.status(500).send({
       success: false,
@@ -51,23 +54,48 @@ const postJob = async (req, res) => {
   }
 };
 
-
 /* Get All Jobs */
 const getAllJobs = async (req, res) => {
-    try {
-        const jobs = await Job.find({hiringManager: req.user._id}).populate('hiringManager', 'name email');
-        res.status(200).send({
-            success: true,
-            message: "All jobs fetched successfully.",
-            data: jobs,
-        });
-    } catch (error) {
-        res.status(500).send({
-            success: false,
-            message: "Server error.",
-        });
-    }
+  try {
+    const jobs = await Job.find({ hiringManager: req.user._id }).populate(
+      "hiringManager",
+      "name email"
+    );
+    res.status(200).send({
+      success: true,
+      message: "All jobs fetched successfully.",
+      data: jobs,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Server error.",
+    });
+  }
 };
 
+/* Get Job By Id */
+const getJobById = async (req, res) => {
+  const _id = req.params.id;
+  try {
+    const job = await Job.findOne({ _id, hiringManager: req.user._id });
+    if (!job) {
+      return res.status(404).send({
+        success: false,
+        message: "Job not found.",
+      });
+    }
+    res.status(200).send({
+      success: true,
+      message: "Job fetched successfully.",
+      data: job,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Server error.",
+    });
+  }
+};
 
-module.exports = { postJob, getAllJobs };
+module.exports = { postJob, getAllJobs, getJobById };
