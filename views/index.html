@@ -11,6 +11,9 @@
         place-items: center;
         height: 95vh;
       }
+      a {
+        color: #001e36;
+      }
       body {
         background-color: #d70;
       }
@@ -32,6 +35,33 @@
         .container h1 {
           font-size: 3rem;
         }
+        a {
+          color: #fff;
+        }
+        ul {
+          list-style: none;
+          margin: 0px;
+          padding: 0px;
+          text-align: left;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+        li {
+          background-color: #0b2f4d;
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+        }
+        .social {
+          display: flex;
+          gap: 1rem;
+          margin-top: 6rem;
+          justify-content: center;
+        }
+        .social a {
+          font-size: 1.1rem;
+        }
       }
     </style>
   </head>
@@ -40,7 +70,80 @@
       <div>
         <h1>Job portal API Home Page</h1>
         <p>Job portal API Home Page</p>
-        <h2>It's Under Construction</h2>
+
+        <h2>Public Routes</h2>
+        <ul>
+          <li>
+            <code>
+              Base URL:
+              <a
+                href="https://job-potals-server.onrender.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >https://job-potals-server.onrender.com/</a
+              >
+            </code>
+          </li>
+          <li>
+            <code>
+              GET All Jobs:
+              <a
+                href="https://job-potals-server.onrender.com/api/jobs"
+                target="_blank"
+                rel="noopener noreferrer"
+                >https://job-potals-server.onrender.com/api/jobs</a
+              >
+            </code>
+          </li>
+          <li>
+            <code>
+              GET Job Details by ID:
+              <a
+                href="https://job-potals-server.onrender.com/api/jobs/634f17a7fb14bfc1b1d39996"
+                target="_blank"
+                rel="noopener noreferrer"
+                >https://job-potals-server.onrender.com/api/jobs/634f17a7fb14bfc1b1d39996</a
+              >
+            </code>
+          </li>
+          <li>
+            <code>
+              GET Top 10 Highest Paid Jobs:
+              <a
+                href="https://job-potals-server.onrender.com/api/jobs/top-10-highest-paid"
+                target="_blank"
+                rel="noopener noreferrer"
+                >https://job-potals-server.onrender.com/api/jobs/top-10-highest-paid</a
+              >
+            </code>
+          </li>
+          <li>
+            <code>
+              Most Applied Jobs:
+              <a
+                href="https://job-potals-server.onrender.com/api/jobs/most-applied"
+                target="_blank"
+                rel="noopener noreferrer"
+                >https://job-potals-server.onrender.com/api/jobs/most-applied</a
+              >
+            </code>
+          </li>
+          <li>
+            <a
+              href="https://github.com/Ashik-Mahmud/job-portals-server#readme"
+              target="_blank"
+              rel="noopener noreferrer"
+              >API Documentation</a
+            >
+          </li>
+        </ul>
+        <div class="social">
+          <a href="https://github.com/ashik-mahmud" target="_blank">Github</a>
+          <a href="https://linkedin.com/in/ashikmahmud187" target="_blank"
+            >LinkedIn</a
+          >
+          <a href="https://ashikmahmud.me" target="_blank">Website</a>
+        </div>
       </div>
     </div>
   </body>
