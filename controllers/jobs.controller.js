@@ -98,4 +98,31 @@ const getJobById = async (req, res) => {
   }
 };
 
-module.exports = { postJob, getAllJobs, getJobById };
+/* Update Job By Id */
+const updateJobById = async (req, res) => {
+  const _id = req.params.id;
+   const data = req.body;
+    try {
+        const job = await Job.findOneAndUpdate({ _id, hiringManager: req.user._id }, data, { new: true });
+        if (!job) {
+            return res.status(404).send({
+                success: false,
+                message: "Job not found.",
+            });
+        }
+        res.status(200).send({
+            success: true,
+            message: "Job updated successfully.",
+            data: job,
+        });
+    }
+    catch (error) {
+        res.status(500).send({
+            success: false,
+            message: "Server error.",
+        });
+    }
+  
+};
+
+module.exports = { postJob, getAllJobs, getJobById, updateJobById };

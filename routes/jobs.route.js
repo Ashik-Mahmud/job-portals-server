@@ -28,5 +28,11 @@ router.get('/manager/jobs', VerifyToken, VerifyHr, jobsController.getAllJobs);
 // @access secured
 router.get('/manager/jobs/:id', VerifyToken, VerifyHr, jobsController.getJobById);
 
+// @route PUT api/jobs/:id
+// @desc Update a Job by Id
+// @access secured
+router.put('/jobs/:id', VerifyToken, VerifyHr, jobsController.updateJobById);
+
+
 // Export Router
 module.exports = router;
