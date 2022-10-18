@@ -25,3 +25,8 @@ exports.getCandidateByIdService = async(_id) =>{
         "-appliedCandidates -hiringManager -createdAt -updatedAt -__v"
       );
 }
+
+/* Get All hrs with posting job */
+exports.getAllHrsServices = async() =>{
+    return await User.find({role: "hr"}).select("-appliedJobs")
+}

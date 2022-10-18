@@ -1,7 +1,11 @@
 /* get all the candidates with applied job */
 
 const User = require("../models/User.model");
-const { getAllCandidatesService, getCandidateByIdService } = require("../services/admin.service");
+const {
+  getAllCandidatesService,
+  getCandidateByIdService,
+  getAllHrsServices,
+} = require("../services/admin.service");
 
 const getAllCandidatesWithAppliedJobs = async (req, res) => {
   try {
@@ -23,7 +27,7 @@ const getAllCandidatesWithAppliedJobs = async (req, res) => {
 const getCandidateById = async (req, res) => {
   const _id = req.params.id;
   try {
-    const candidate = await getCandidateByIdService(_id)
+    const candidate = await getCandidateByIdService(_id);
     if (!candidate) {
       return res.status(404).send({
         success: false,
@@ -43,4 +47,32 @@ const getCandidateById = async (req, res) => {
   }
 };
 
-module.exports = { getAllCandidatesWithAppliedJobs, getCandidateById };
+/* Get All the HRs */
+
+const getAllTheHrs = async (req, res) => {
+  try {
+    const hrs = await getAllHrsServices();
+    if (!hrs) {
+      return res.status(404).send({
+        success: false,
+        message: "Hiring Manager not found.",
+      });
+    }
+    res.status(202).send({
+      success: true,
+      message: "Fetched all the hiring manager",
+      data: hrs,
+    });
+  } catch (error) {
+    res.status(405).send({
+      success: false,
+      message: "server error" + error,
+    });
+  }
+};
+
+module.exports = {
+  getAllCandidatesWithAppliedJobs,
+  getCandidateById,
+  getAllTheHrs,
+};
