@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const VerifyHr = require("../middlewares/VerifyHR");
 const VerifyToken = require('../middlewares/VerifyToken');
+const VerifyCandidate = require("../middlewares/VerifyCandidate")
 // Import Controller
 const jobsController = require('./../controllers/jobs.controller');
 
@@ -43,6 +44,11 @@ router.get("/jobs", jobsController.getAllJobs)
 // @desc Get a Job by Id
 // @access public
 router.get("/jobs/:id", jobsController.getJobByJobId)
+
+// @route POST api/jobs/:id/apply
+// @desc Apply to the Particular Job
+// @access secured
+router.post("/jobs/:id/apply", VerifyToken, VerifyCandidate, jobsController.applyJob)
 
 
 // Export Router

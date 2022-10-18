@@ -74,6 +74,7 @@ const userSchema = new mongoose.Schema(
       default: "active",
       enum: ["active", "inactive"],
     },
+  
 
     tokens: [
       {

@@ -11,3 +11,9 @@ exports.findAllJobService = async(filters, sortBy) =>{
     const result = await Job.find(filters).sort(sortBy);
     return result;
 }
+
+/* Find Job by ID */
+exports.findJobById = async(id) =>{
+    const result = await Job.findById(id);
+    return result;
+}

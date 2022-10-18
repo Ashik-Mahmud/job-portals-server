@@ -10,9 +10,10 @@ const VerifyToken = async(req, res, next) =>{
             message: "Unauthorized Access"
         })
     }
+        
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
     const user = await User.findOne({ _id: decoded._id }).select("-password");
-    
+        
     if (!user) {
         throw new Error();
     }

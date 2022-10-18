@@ -2,7 +2,9 @@ const Job = require("../models/Jobs.model");
 const {
   postJobByHrService,
   findAllJobService,
+  findJobById,
 } = require("../services/job.service");
+const { findUserByIdService } = require("../services/user.service");
 
 
 /* Post Job from Hiring Manager */
@@ -225,11 +227,63 @@ const getJobByJobId = async (req, res) => {
   }
 };
 
+
+/* Apply Job for */
+const applyJob = async(req, res) =>{
+    const _id = req.params.id;
+
+    if(!_id) return res.status(404).send({
+        success: false,
+        message: 'ID not found.'
+    })
+
+    const candidate = req.user._id;
+    const job = await findJobById(_id);
+    const user = await findUserByIdService(candidate)
+
+    if(!user) return res.status(404).send({
+        success: false,
+        message: 'User not found'
+    })
+    if(!job) return res.status(404).send({
+        success: false,
+        message: 'Job not found.'
+    })
+    
+  
+
+
+    if(job.appliedCandidates.includes(candidate)){
+        return res.status(404).send({
+            success: false,
+            message: "Already applied"
+        })
+    }
+
+ 
+
+
+    job.appliedCandidates.push(candidate);
+    job.save();
+
+
+    res.status(202).send({
+        success: true, 
+        message: 'Applied Job'
+    })
+    
+}
+
+
+
+
+
 module.exports = {
   postJob,
   getAllJobsByHr,
   getJobById,
   updateJobById,
   getAllJobs,
-  getJobByJobId
+  getJobByJobId,
+  applyJob
 };
