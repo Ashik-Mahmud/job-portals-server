@@ -137,18 +137,34 @@ const updateJobById = async (req, res) => {
 /* get All Jobs */
 const getAllJobs = async (req, res) => {
   const {location, jobType, workType, salaryTo, salaryFrom} = req.query;
-  console.log(
-    location, jobType,  workType, salaryTo, salaryFrom
-  );
-  
+    
   try {
     let filters = {};
 
     /* Filtered by location */
     if(location){
-      
+        const query = new RegExp(location, 'i');
+        filters = {...filters, location: query}          
     }
-    const jobs = await findAllJobService();
+
+    /* Filtered by jobType */
+    if(jobType){
+        const query = new RegExp(jobType, 'i');
+        filters = {...filters, jobType: query}
+    }
+
+    /* Filtered by workType */
+    if(workType){
+        const query = new RegExp(workType, 'i');
+        filters = {...filters, workType: query}
+    }
+
+    /* Filtered by salaryTo */
+    if(salaryTo || salaryFrom){
+        filters = {...filters, salary: {$gte: salaryFrom, $lte: salaryTo}}
+    }
+
+    const jobs = await findAllJobService(filters);
     if (!jobs) {
       return res.status(404).send({
         success: false,

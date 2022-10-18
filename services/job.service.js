@@ -7,7 +7,7 @@ exports.postJobByHrService = async(data) => {
 }
 
 /* Get All the Jobs by Public */
-exports.findAllJobService = async() =>{
-    const result = await Job.find({});
+exports.findAllJobService = async(filters) =>{
+    const result = await Job.find(filters);
     return result;
 }
