@@ -136,8 +136,8 @@ const updateJobById = async (req, res) => {
 
 /* get All Jobs */
 const getAllJobs = async (req, res) => {
-  const {location, jobType, workType, salaryTo, salaryFrom} = req.query;
-    
+  const {location, jobType, workType, salaryTo, salaryFrom, sortBy} = req.query;
+          
   try {
     let filters = {};
 
@@ -164,7 +164,11 @@ const getAllJobs = async (req, res) => {
         filters = {...filters, salary: {$gte: salaryFrom, $lte: salaryTo}}
     }
 
-    const jobs = await findAllJobService(filters);
+    /* Filtered by sortBy */
+  
+   
+
+    const jobs = await findAllJobService(filters, sortBy);
     if (!jobs) {
       return res.status(404).send({
         success: false,
