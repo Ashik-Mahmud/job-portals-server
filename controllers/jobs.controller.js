@@ -52,7 +52,7 @@ const postJob = async (req, res) => {
       ...req.body,
       deadLine: increaseDate,
       hiringManager: req.user._id,
-    });
+    }, req.user._id);
     res.status(201).send({
       success: true,
       message: "Job posted successfully.",

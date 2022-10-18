@@ -81,7 +81,12 @@ const userSchema = new mongoose.Schema(
             ref: "Jobs"
         }
     ],  
-
+    postedJobs: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Jobs"
+        }
+    ],
     tokens: [
       {
         token: {
