@@ -136,41 +136,40 @@ const updateJobById = async (req, res) => {
 
 /* get All Jobs */
 const getAllJobs = async (req, res) => {
-  const {location, jobType, workType, salaryTo, salaryFrom, sortBy} = req.query;
-          
+  const { location, jobType, workType, salaryTo, salaryFrom, sortBy } =
+    req.query;
+
   try {
     let filters = {};
-    let sort = {}
+    let sort = {};
     /* Filtered by location */
-    if(location){
-        const query = new RegExp(location, 'i');
-        filters = {...filters, location: query}          
+    if (location) {
+      const query = new RegExp(location, "i");
+      filters = { ...filters, location: query };
     }
 
     /* Filtered by jobType */
-    if(jobType){
-        const query = new RegExp(jobType, 'i');
-        filters = {...filters, jobType: query}
+    if (jobType) {
+      const query = new RegExp(jobType, "i");
+      filters = { ...filters, jobType: query };
     }
 
     /* Filtered by workType */
-    if(workType){
-        const query = new RegExp(workType, 'i');
-        filters = {...filters, workType: query}
+    if (workType) {
+      const query = new RegExp(workType, "i");
+      filters = { ...filters, workType: query };
     }
 
     /* Filtered by salaryTo */
-    if(salaryTo || salaryFrom){
-        filters = {...filters, salary: {$gte: salaryFrom, $lte: salaryTo}}
+    if (salaryTo || salaryFrom) {
+      filters = { ...filters, salary: { $gte: salaryFrom, $lte: salaryTo } };
     }
 
     /* Filtered by sortBy */
-    if(sortBy){
-        const sortItems = sortBy.split(",").join(" ");
-        sort = sortItems
-        
+    if (sortBy) {
+      const sortItems = sortBy.split(",").join(" ");
+      sort = sortItems;
     }
-   
 
     const jobs = await findAllJobService(filters, sort);
     if (!jobs) {
@@ -195,4 +194,35 @@ const getAllJobs = async (req, res) => {
   }
 };
 
-module.exports = { postJob, getAllJobsByHr, getJobById, updateJobById, getAllJobs };
+/* Get job by id */
+const getJobByJobId = async (req, res) => {
+  const _id = req.params.id;
+  try {
+    const job = await Job.findOne({ _id }).populate("hiringManager", "name email role socialLinks");
+    if (!job) {
+      return res.status(404).send({
+        success: false,
+        message: "Job not found.",
+      });
+    }
+    res.status(200).send({
+      success: true,
+      message: "Job fetched successfully.",
+      data: job,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Server error.",
+    });
+  }
+};
+
+module.exports = {
+  postJob,
+  getAllJobsByHr,
+  getJobById,
+  updateJobById,
+  getAllJobs,
+  getJobByJobId
+};

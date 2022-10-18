@@ -39,6 +39,11 @@ router.put('/jobs/:id', VerifyToken, VerifyHr, jobsController.updateJobById);
 // @access public
 router.get("/jobs", jobsController.getAllJobs)
 
+// @route GET api/jobs/:id
+// @desc Get a Job by Id
+// @access public
+router.get("/jobs/:id", jobsController.getJobByJobId)
+
 
 // Export Router
 module.exports = router;
