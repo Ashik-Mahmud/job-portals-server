@@ -1,3 +1,4 @@
+const Job = require("../models/Jobs.model");
 const { postJobByHrService } = require("../services/job.service");
 
 /* Post Job from Hiring Manager */
@@ -50,4 +51,23 @@ const postJob = async (req, res) => {
   }
 };
 
-module.exports = { postJob };
+
+/* Get All Jobs */
+const getAllJobs = async (req, res) => {
+    try {
+        const jobs = await Job.find({hiringManager: req.user._id}).populate('hiringManager', 'name email');
+        res.status(200).send({
+            success: true,
+            message: "All jobs fetched successfully.",
+            data: jobs,
+        });
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: "Server error.",
+        });
+    }
+};
+
+
+module.exports = { postJob, getAllJobs };

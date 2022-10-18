@@ -18,5 +18,10 @@ const jobsController = require('./../controllers/jobs.controller');
 // @access secured
 router.post('/', VerifyToken, VerifyHr, jobsController.postJob);
 
+// @route GET api/jobs
+// @desc Get all Jobs
+// @access secured
+router.get('/manager', VerifyToken, VerifyHr, jobsController.getAllJobs);
+
 // Export Router
 module.exports = router;
