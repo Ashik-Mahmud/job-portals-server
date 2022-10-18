@@ -17,7 +17,7 @@ app.use(express.static(path.resolve("uploads")));
 
 
 // Database Connection
-const dbConnection = require("./../utils/dbConnection")
+const dbConnection = require("./utils/dbConnection")
 dbConnection();
 
 // Init very First Route for App

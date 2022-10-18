@@ -3,9 +3,9 @@ const app = require("./app");
 
 
 /* Imports Router Here */
-const jobsRouter = require("./../routes/jobs.route")
-const userRouter = require("./../routes/user.route")
-const adminRouter = require("./../routes/admin.route")
+const jobsRouter = require("./routes/jobs.route")
+const userRouter = require("./routes/user.route")
+const adminRouter = require("./routes/admin.route")
 
 
 /* Apply Router Here */
