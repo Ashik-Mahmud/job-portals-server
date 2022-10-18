@@ -9,7 +9,7 @@ exports.postJobByHrService = async(data) => {
 
 /* Get All the Jobs by Public */
 exports.findAllJobService = async(filters, sortBy) =>{
-    const result = await Job.find(filters).sort(sortBy);
+    const result = await Job.find(filters).sort(sortBy).select("-appliedCandidates");
     return result;
 }
 

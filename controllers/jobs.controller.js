@@ -260,6 +260,13 @@ const applyJob = async (req, res) => {
         message: "User not found",
       });
 
+    const isExpired = job.deadLine < Date.now();
+    if (isExpired) {
+      return res.status(403).send({
+        success: false,
+        message: "Job is expired.",
+      });
+    }
     const isApplied = await Job.findOne({
       $and: [{ _id }, { "appliedCandidates.candidate": candidate }],
     });
