@@ -90,7 +90,7 @@ const getAllJobsByHr = async (req, res) => {
 const getJobById = async (req, res) => {
   const _id = req.params.id;
   try {
-    const job = await Job.findOne({ _id, hiringManager: req.user._id });
+    const job = await Job.findOne({ _id, hiringManager: req.user._id }).populate("appliedCandidates.candidate appliedCandidates.candidateInfo", "-createdAt -updatedAt -__v -job -user -_id");
     if (!job) {
       return res.status(404).send({
         success: false,
