@@ -21,7 +21,7 @@ router.post('/jobs', VerifyToken, VerifyHr, jobsController.postJob);
 // @route GET api/jobs
 // @desc Get all Jobs
 // @access secured
-router.get('/manager/jobs', VerifyToken, VerifyHr, jobsController.getAllJobs);
+router.get('/manager/jobs', VerifyToken, VerifyHr, jobsController.getAllJobsByHr);
 
 // @route GET api/jobs/:id
 // @desc Get a Job by Id
@@ -32,6 +32,12 @@ router.get('/manager/jobs/:id', VerifyToken, VerifyHr, jobsController.getJobById
 // @desc Update a Job by Id
 // @access secured
 router.put('/jobs/:id', VerifyToken, VerifyHr, jobsController.updateJobById);
+
+
+// @route GET api/jobs 
+// @desc Get All the Jobs 
+// @access public
+router.get("/jobs", jobsController.getAllJobs)
 
 
 // Export Router

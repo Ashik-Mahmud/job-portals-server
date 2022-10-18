@@ -1,5 +1,8 @@
 const Job = require("../models/Jobs.model");
-const { postJobByHrService } = require("../services/job.service");
+const {
+  postJobByHrService,
+  findAllJobService,
+} = require("../services/job.service");
 
 /* Post Job from Hiring Manager */
 const postJob = async (req, res) => {
@@ -55,7 +58,7 @@ const postJob = async (req, res) => {
 };
 
 /* Get All Jobs */
-const getAllJobs = async (req, res) => {
+const getAllJobsByHr = async (req, res) => {
   try {
     const jobs = await Job.find({ hiringManager: req.user._id }).populate(
       "hiringManager",
@@ -101,28 +104,71 @@ const getJobById = async (req, res) => {
 /* Update Job By Id */
 const updateJobById = async (req, res) => {
   const _id = req.params.id;
-   const data = req.body;
-    try {
-        const job = await Job.findOneAndUpdate({ _id, hiringManager: req.user._id }, data, { new: true });
-        if (!job) {
-            return res.status(404).send({
-                success: false,
-                message: "Job not found.",
-            });
-        }
-        res.status(200).send({
-            success: true,
-            message: "Job updated successfully.",
-            data: job,
-        });
+  const data = req.body;
+  try {
+    const job = await Job.findOneAndUpdate(
+      { _id, hiringManager: req.user._id },
+      data,
+      { new: true }
+    );
+    if (!job) {
+      return res.status(404).send({
+        success: false,
+        message: "Job not found.",
+      });
     }
-    catch (error) {
-        res.status(500).send({
-            success: false,
-            message: "Server error.",
-        });
-    }
-  
+    res.status(200).send({
+      success: true,
+      message: "Job updated successfully.",
+      data: job,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Server error.",
+    });
+  }
 };
 
-module.exports = { postJob, getAllJobs, getJobById, updateJobById };
+/* 
+ Public Routes 
+*/
+
+/* get All Jobs */
+const getAllJobs = async (req, res) => {
+  const {location, jobType, workType, salaryTo, salaryFrom} = req.query;
+  console.log(
+    location, jobType,  workType, salaryTo, salaryFrom
+  );
+  
+  try {
+    let filters = {};
+
+    /* Filtered by location */
+    if(location){
+      
+    }
+    const jobs = await findAllJobService();
+    if (!jobs) {
+      return res.status(404).send({
+        success: false,
+        message: "Jobs not found",
+      });
+    }
+    const count = await Job.countDocuments();
+
+    res.status(202).send({
+      success: true,
+      message: `Jobs found`,
+      data: jobs,
+      count: count,
+    });
+  } catch (err) {
+    res.status(505).send({
+      success: false,
+      message: `Server Error ${err}`,
+    });
+  }
+};
+
+module.exports = { postJob, getAllJobsByHr, getJobById, updateJobById, getAllJobs };
