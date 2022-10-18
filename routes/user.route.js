@@ -1,5 +1,5 @@
 const router = require('express').Router();
-
+const VerifyToken = require("./../middlewares/VerifyToken")
 // Importing the User Controller
 const userController = require('./../controllers/user.controller');
 
@@ -20,7 +20,7 @@ router.post('/login', userController.login);
 // @route   GET api/user/me
 // @desc    Get User Profile
 // @access  Private
-router.get('/me', userController.getUser);
+router.get('/me', VerifyToken, userController.getUser);
 
 // @route   GET api/user/logout
 // @desc    Logout User

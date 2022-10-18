@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const VerifyHr = require("../middlewares/VerifyHR")
+const VerifyHr = require("../middlewares/VerifyHR");
+const VerifyToken = require('../middlewares/VerifyToken');
 // Import Controller
 const jobsController = require('./../controllers/jobs.controller');
 
@@ -15,7 +16,7 @@ const jobsController = require('./../controllers/jobs.controller');
 // @route POST api/jobs
 // @desc Create a Job by Hiring Manager
 // @access secured
-router.post('/', VerifyHr, jobsController.postJob);
+router.post('/', VerifyToken, VerifyHr, jobsController.postJob);
 
 // Export Router
 module.exports = router;

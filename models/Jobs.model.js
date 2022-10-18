@@ -29,11 +29,23 @@ const jobsSchema = new mongoose.Schema({
         enum: ["remote", "on-site", "hybrid"],
         required: true,
     },
+    workType: {
+        type: String,
+        trim: true,
+        enum: ['Full Time', 'Part Time', 'Internship', 'Contract','Volunteer'],
+        required: true,
+    },
     salary: {
         type: Number,
         required: true,
         trim: true
-    }, 
+    },
+    employees:{
+        type: Number,
+        trim: true,
+        default: 1,
+        min: [1, 'min value will be 1']
+    },
     company: {
         type: String,
         required: true,
