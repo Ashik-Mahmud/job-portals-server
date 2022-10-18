@@ -4,6 +4,7 @@ const {
   findAllJobService,
 } = require("../services/job.service");
 
+
 /* Post Job from Hiring Manager */
 const postJob = async (req, res) => {
   const {
@@ -38,10 +39,16 @@ const postJob = async (req, res) => {
       message: "All fields are required.",
     });
   }
+ 
+  const todayDate = Date.now() 
+  const days = deadLine *24*60*60*1000;
+  const increaseDate = todayDate + days;
+  
 
   try {
     const job = await postJobByHrService({
       ...req.body,
+      deadLine: increaseDate,
       hiringManager: req.user._id,
     });
     res.status(201).send({
@@ -140,7 +147,7 @@ const getAllJobs = async (req, res) => {
     req.query;
 
   try {
-    let filters = {};
+    let filters = {status: "active"};
     let sort = {};
     /* Filtered by location */
     if (location) {

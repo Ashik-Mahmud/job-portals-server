@@ -59,7 +59,7 @@ const jobsSchema = new mongoose.Schema({
         required: true,
     },
     deadLine: {
-        type: String,
+        type: Number,
         required: true,
         trim: true,
     },
