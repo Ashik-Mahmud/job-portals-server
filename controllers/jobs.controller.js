@@ -234,7 +234,7 @@ const getJobByJobId = async (req, res) => {
   } catch (error) {
     res.status(500).send({
       success: false,
-      message: "Server error."+ error,
+      message: "Server error." + error,
     });
   }
 };
@@ -317,7 +317,10 @@ const applyJob = async (req, res) => {
 /* Get Top 10 Highest Paid Job */
 const getTop10HighestPaidJob = async (req, res) => {
   try {
-    const jobs = await Job.find({}).sort("-salary").select("-appliedCandidates").limit(10);
+    const jobs = await Job.find({})
+      .sort("-salary")
+      .select("-appliedCandidates")
+      .limit(10);
     if (!jobs)
       return res
         .status(404)
@@ -336,6 +339,23 @@ const getTop10HighestPaidJob = async (req, res) => {
   }
 };
 
+/* get most applied jobs */
+const getTopMostAppliedJobs = async (req, res) => {
+  try {
+    const jobs = await Job.find({}).sort("-appliedCandidates");
+    res.status(202).send({
+      success: true,
+      message: "fetched jobs",
+      data: jobs,
+    });
+  } catch (error) {
+    res.status(404).send({
+      success: false,
+      message: "Server Error" + error,
+    });
+  }
+};
+
 module.exports = {
   postJob,
   getAllJobsByHr,
@@ -345,4 +365,5 @@ module.exports = {
   getJobByJobId,
   applyJob,
   getTop10HighestPaidJob,
+  getTopMostAppliedJobs,
 };

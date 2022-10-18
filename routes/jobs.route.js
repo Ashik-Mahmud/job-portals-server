@@ -45,6 +45,10 @@ router.get("/jobs", jobsController.getAllJobs)
 // @access public
 router.get("/jobs/top-10-highest-paid", jobsController.getTop10HighestPaidJob)
 
+// @route GET api/jobs/top-5-most-applied-job
+// @desc Get Top 5 Most Applied Job
+// @access public
+router.get("/jobs/most-applied", jobsController.getTopMostAppliedJobs)
 
 // @route GET api/jobs/:id
 // @desc Get a Job by Id
