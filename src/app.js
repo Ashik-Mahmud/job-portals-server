@@ -11,9 +11,10 @@ const port = process.env.PORT || 5000;
 
 // Serve static files from the React app & CORS & Apply middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.static(path.resolve("uploads")));
+
+
 
 // Database Connection
 const dbConnection = require("./../utils/dbConnection")
@@ -28,5 +29,7 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
+
+
 
 module.exports = app;

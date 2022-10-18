@@ -1,8 +1,13 @@
+const User = require("../models/User.model");
+const bcrypt = require("bcrypt");
+const { findUserByEmail } = require("../services/user.service");
+
 // Register User Controller
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
+  
   try {
-    let user = await User.findOne({ email });
+    let user = await findUserByEmail(email);
     if (user) {
       return res.status(400).json({
         message: "User already exists",
@@ -12,6 +17,7 @@ const register = async (req, res) => {
       name,
       email,
       password,
+      role,
     });
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
@@ -28,6 +34,7 @@ const register = async (req, res) => {
     });
   }
 };
+
 
 // Login User Controller
 const login = async (req, res) => {

@@ -8,7 +8,7 @@ const userRouter = require("./../routes/user.route")
 
 
 /* Apply Router Here */
-app.use("api/user", userRouter)
+app.use("/api/user", userRouter)
 app.use("/api/jobs", jobsRouter);
 
 
@@ -18,7 +18,6 @@ app.use("/api/jobs", jobsRouter);
 
 
 /* Global Error Handling */
-
 app.use((req, res, next) => {
     const error = new Error("Not found");
     error.status = 404;
