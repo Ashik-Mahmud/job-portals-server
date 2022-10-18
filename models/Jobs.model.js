@@ -63,7 +63,7 @@ const jobsSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    hr: {
+    hiringManager: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
