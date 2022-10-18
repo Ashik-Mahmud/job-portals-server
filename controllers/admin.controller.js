@@ -6,6 +6,7 @@ const {
   getCandidateByIdService,
   getAllHrsServices,
 } = require("../services/admin.service");
+const { findUserByIdService } = require("../services/user.service");
 
 const getAllCandidatesWithAppliedJobs = async (req, res) => {
   try {
@@ -71,8 +72,46 @@ const getAllTheHrs = async (req, res) => {
   }
 };
 
+/* Change Role to the Hiring Manager */
+const changeRole = async (req, res) => {
+  const _id = req.params.id;
+  const { role } = req.body;
+  try {
+    console.log(_id);
+    const user = await findUserByIdService(_id);
+        
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: "User Does not exist",
+      });
+    }
+
+    /* if (user.role !== "hr") {
+      return res.status(404).send({
+        success: false,
+        message:
+          "This user is not Hiring Manager, You only can change role of Hiring Manager.",
+      });
+    }
+   */
+    user.role = role;
+    user.save();
+    res.status(200).send({
+      success: true,
+      message: "Role successfully changed to " + role,
+    });
+  } catch (error) {
+    res.status(404).send({
+      success: false,
+      message: "Server Error" + error,
+    });
+  }
+};
+
 module.exports = {
   getAllCandidatesWithAppliedJobs,
   getCandidateById,
   getAllTheHrs,
+  changeRole,
 };

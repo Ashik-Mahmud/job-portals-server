@@ -25,5 +25,10 @@ router.get("/candidates/:id", VerifyToken, VerifyAdmin, jobsController.getCandid
 // @access private
 router.get("/hrs", VerifyToken, VerifyAdmin, jobsController.getAllTheHrs)
 
+// @routes PATCH api/admin/change-role
+// @desc change role to the Hiring manager
+// @access private
+router.patch("/change-role/:id", VerifyToken, VerifyAdmin, jobsController.changeRole)
+
 
 module.exports = router;
