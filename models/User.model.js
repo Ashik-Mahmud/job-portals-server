@@ -74,7 +74,13 @@ const userSchema = new mongoose.Schema(
       default: "active",
       enum: ["active", "inactive"],
     },
-  
+
+    appliedJobs: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Jobs"
+        }
+    ],  
 
     tokens: [
       {

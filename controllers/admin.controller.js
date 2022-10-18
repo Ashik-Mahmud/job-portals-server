@@ -1,8 +1,11 @@
 /* get all the candidates with applied job */
 
+const { getAllCandidatesService } = require("../services/admin.service");
+
 const getAllCandidatesWithAppliedJobs = async (req, res) => {
+   
   try {
-    const candidates = await Candidate.find({}).populate("appliedJobs");
+    const candidates = await getAllCandidatesService();
     res.status(200).send({
       success: true,
       message: "Candidates with applied jobs fetched successfully.",

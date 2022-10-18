@@ -1,5 +1,6 @@
 const AppliedJob = require("../models/AppliedJob.model");
-const Job = require("../models/Jobs.model")
+const Job = require("../models/Jobs.model");
+const User = require("../models/User.model");
 
 /* Save Job For Hr */
 exports.postJobByHrService = async(data) => {
@@ -21,6 +22,7 @@ exports.findJobById = async(id) =>{
 
 /* Apply Job Services */
 exports.applyJobService = async({jobId, candidate, infoId}) =>{
+    await User.findByIdAndUpdate(candidate, {$push: {appliedJobs: jobId}});
     const result = await Job.findByIdAndUpdate(jobId, {$push: {'appliedCandidates': {candidate,  candidateInfo: infoId}}}, {new: true});
     return result;
 }
@@ -28,6 +30,7 @@ exports.applyJobService = async({jobId, candidate, infoId}) =>{
 
 /* Saved Job for Applied Candidate */
 exports.saveAppliedCandidateInfoService = async(data, candidate, jobId) =>{
+    
     const result = await AppliedJob.create({...data, user: candidate, job: jobId});
     return result;
 }
