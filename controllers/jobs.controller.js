@@ -342,7 +342,26 @@ const getTop10HighestPaidJob = async (req, res) => {
 /* get most applied jobs */
 const getTopMostAppliedJobs = async (req, res) => {
   try {
-    const jobs = await Job.find({}).sort("-appliedCandidates");
+    /* Most Applied Jobs */
+    const jobs = await Job.aggregate([
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          position: 1,
+          jobType: 1,
+          workType: 1,
+          salary: 1,
+          location: 1,
+          deadLine: 1,
+          appliedCandidates: 1,
+          totalApplied: { $size: "$appliedCandidates" },
+        },
+      },
+      { $sort: { totalApplied: -1 } },
+      { $limit: 10 },
+    ]);
+
     res.status(202).send({
       success: true,
       message: "fetched jobs",
