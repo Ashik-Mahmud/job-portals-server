@@ -48,11 +48,14 @@ const postJob = async (req, res) => {
   const increaseDate = todayDate + days;
 
   try {
-    const job = await postJobByHrService({
-      ...req.body,
-      deadLine: increaseDate,
-      hiringManager: req.user._id,
-    }, req.user._id);
+    const job = await postJobByHrService(
+      {
+        ...req.body,
+        deadLine: increaseDate,
+        hiringManager: req.user._id,
+      },
+      req.user._id
+    );
     res.status(201).send({
       success: true,
       message: "Job posted successfully.",
@@ -90,7 +93,13 @@ const getAllJobsByHr = async (req, res) => {
 const getJobById = async (req, res) => {
   const _id = req.params.id;
   try {
-    const job = await Job.findOne({ _id, hiringManager: req.user._id }).populate("appliedCandidates.candidate appliedCandidates.candidateInfo", "-createdAt -updatedAt -__v -job -user -_id");
+    const job = await Job.findOne({
+      _id,
+      hiringManager: req.user._id,
+    }).populate(
+      "appliedCandidates.candidate appliedCandidates.candidateInfo",
+      "-createdAt -updatedAt -__v -job -user -_id"
+    );
     if (!job) {
       return res.status(404).send({
         success: false,
@@ -225,7 +234,7 @@ const getJobByJobId = async (req, res) => {
   } catch (error) {
     res.status(500).send({
       success: false,
-      message: "Server error.",
+      message: "Server error."+ error,
     });
   }
 };
@@ -305,6 +314,28 @@ const applyJob = async (req, res) => {
   }
 };
 
+/* Get Top 10 Highest Paid Job */
+const getTop10HighestPaidJob = async (req, res) => {
+  try {
+    const jobs = await Job.find({}).sort("-salary").select("-appliedCandidates").limit(10);
+    if (!jobs)
+      return res
+        .status(404)
+        .send({ success: false, message: "Jobs not found" });
+
+    res.status(202).send({
+      success: true,
+      message: "Fetched Jobs",
+      data: jobs,
+    });
+  } catch (err) {
+    res.status(404).send({
+      success: false,
+      message: `Server Error ${err}`,
+    });
+  }
+};
+
 module.exports = {
   postJob,
   getAllJobsByHr,
@@ -313,4 +344,5 @@ module.exports = {
   getAllJobs,
   getJobByJobId,
   applyJob,
+  getTop10HighestPaidJob,
 };

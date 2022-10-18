@@ -40,10 +40,19 @@ router.put('/jobs/:id', VerifyToken, VerifyHr, jobsController.updateJobById);
 // @access public
 router.get("/jobs", jobsController.getAllJobs)
 
+// @route GET api/jobs/top-10-highest-paid
+// @desc Get Top 10 Highest Paid Job
+// @access public
+router.get("/jobs/top-10-highest-paid", jobsController.getTop10HighestPaidJob)
+
+
 // @route GET api/jobs/:id
 // @desc Get a Job by Id
 // @access public
 router.get("/jobs/:id", jobsController.getJobByJobId)
+
+
+
 
 // @route POST api/jobs/:id/apply
 // @desc Apply to the Particular Job
