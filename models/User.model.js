@@ -111,8 +111,8 @@ userSchema.methods.generateAuthToken = async function () {
     { _id: user._id.toString() },
     process.env.TOKEN_SECRET
   );
-  user.tokens = user.tokens.concat({ token });
-  await user.save();
+ // user.tokens = user.tokens.concat({ token });
+ // await user.save();
   return token;
 };
 
@@ -137,13 +137,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Compared Password 
-userSchema.methods.comparePassword = function (candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
-};
+
 
 
 const User = mongoose.model("User", userSchema);
