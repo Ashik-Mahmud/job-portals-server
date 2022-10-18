@@ -15,7 +15,6 @@ app.use(cors());
 app.use(express.static(path.resolve("uploads")));
 
 
-
 // Database Connection
 const dbConnection = require("./utils/dbConnection")
 dbConnection();
