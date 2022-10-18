@@ -11,6 +11,7 @@ const jobsController = require('./../controllers/admin.controller');
 // Import Middleware
 
 router.get("/candidates", VerifyToken, VerifyAdmin, jobsController.getAllCandidatesWithAppliedJobs);
+router.get("/candidates/:id", VerifyToken, VerifyAdmin, jobsController.getCandidateById);
 
 
 module.exports = router;

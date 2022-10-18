@@ -16,3 +16,12 @@ exports.getAllCandidatesService = async () => {
     };
   }
 };
+
+
+/* Get Candidate By ID */
+exports.getCandidateByIdService = async(_id) =>{
+    return await User.findOne({ _id, role: "candidate" }).populate(
+        "appliedJobs",
+        "-appliedCandidates -hiringManager -createdAt -updatedAt -__v"
+      );
+}
