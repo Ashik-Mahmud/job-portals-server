@@ -140,7 +140,7 @@ const getAllJobs = async (req, res) => {
           
   try {
     let filters = {};
-
+    let sort = {}
     /* Filtered by location */
     if(location){
         const query = new RegExp(location, 'i');
@@ -165,10 +165,14 @@ const getAllJobs = async (req, res) => {
     }
 
     /* Filtered by sortBy */
-  
+    if(sortBy){
+        const sortItems = sortBy.split(",").join(" ");
+        sort = sortItems
+        
+    }
    
 
-    const jobs = await findAllJobService(filters, sortBy);
+    const jobs = await findAllJobService(filters, sort);
     if (!jobs) {
       return res.status(404).send({
         success: false,
