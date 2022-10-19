@@ -1,5 +1,5 @@
 const Job = require("../models/Jobs.model");
-const {google} = require("googleapis");
+const { google } = require("googleapis");
 const {
   postJobByHrService,
   findAllJobService,
@@ -8,6 +8,7 @@ const {
   saveAppliedCandidateInfoService,
 } = require("../services/job.service");
 const { findUserByIdService } = require("../services/user.service");
+const { deleteResume } = require("../utils/uploadResume");
 
 /* Post Job from Hiring Manager */
 const postJob = async (req, res) => {
@@ -244,12 +245,11 @@ const getJobByJobId = async (req, res) => {
 const applyJob = async (req, res) => {
   const _id = req.params.id;
 
-  const { coverLetter, resume, portfolio, linkedIn, github } = req.body;
-
-  if (!coverLetter || !resume || !portfolio || !linkedIn || !github) {
+  const { coverLetter } = req.body;
+  if (!coverLetter || !req.resumeLink) {
     return res.status(403).send({
       success: false,
-      message: "All fields are required.",
+      message: "All fields are required",
     });
   }
 
@@ -257,7 +257,6 @@ const applyJob = async (req, res) => {
     const candidate = req.user._id;
     const job = await findJobById(_id);
     const user = await findUserByIdService(candidate);
-
     if (!job)
       return res.status(404).send({
         success: false,
@@ -280,14 +279,16 @@ const applyJob = async (req, res) => {
     const isApplied = await Job.findOne({
       $and: [{ _id }, { "appliedCandidates.candidate": candidate }],
     });
-    if (isApplied)
+    if (isApplied) {
+      deleteResume(req.fileId);
       return res.status(400).send({
         success: false,
         message: "You have already applied for this job.",
       });
+    }
 
     const savedAppliedCandidateInfo = await saveAppliedCandidateInfoService(
-      req.body,
+      { ...req.body, resume: req.resumeLink },
       candidate,
       _id
     );
